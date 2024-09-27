@@ -3,12 +3,13 @@ const chaiHttp = require('chai-http');
 const dotenv = require('dotenv');
 
 const assert = chai.assert;
+const token = require("./a-get-main-page.js");
 
 dotenv.config();
 chai.use(chaiHttp);
 
 const url = process.env.URL;
-const token = process.env.ACCESS_TOKEN; 
+// const token = process.env.ACCESS_TOKEN;
 describe("As a customer, I want to see ALL kind of Orders", () => {  
 
   it("It should give ERROR message, because there is NO token", (done) => {
@@ -29,13 +30,13 @@ describe("As a customer, I want to see ALL kind of Orders", () => {
     chai
       .request(url)
       .get('/orders')
-      .set("Authorization", "Bearer " + token)
+      .set("Authorization", "Bearer " + token.tokenId())
       .then((response) => {
           assert.equal(response.status, 200);
 
-          assert.containsAllKeys(response.body[1], ["id", "bookId", "customerName", "createdBy", "quantity", "timestamp"]);
-          assert.isString(response.body[1].id);
-          assert.isNumber(response.body[1].bookId);
+          assert.containsAllKeys(response.body[0], ["id", "bookId", "customerName", "createdBy", "quantity", "timestamp"]);
+          assert.isString(response.body[0].id);
+          assert.isNumber(response.body[0].bookId);
           done();
       })
       .catch((error) => {
@@ -46,14 +47,14 @@ describe("As a customer, I want to see ALL kind of Orders", () => {
   it("It should SUCCESS to load SINGLE of the order", (done) => {
     chai.request(url)
       .get("/orders")
-      .set("Authorization", "Bearer " + token)
+      .set("Authorization", "Bearer " + token.tokenId())
       .then((response) => {
           assert.equal(response.status, 200);
           const orderId = response.body[0].id;
 
           chai.request(url)
               .get(`/orders/${orderId}`)
-              .set("Authorization", "Bearer " + token)
+              .set("Authorization", "Bearer " + token.tokenId())
               .then((response) => {
                   assert.equal(response.status, 200);
                   assert.equal(response.body.id, orderId);
@@ -68,14 +69,14 @@ describe("As a customer, I want to see ALL kind of Orders", () => {
   it("It should give ERROR Message, because INVALID Order ID is given", (done) => {
     chai.request(url)
       .get("/orders")
-      .set("Authorization", "Bearer " + token)
+      .set("Authorization", "Bearer " + token.tokenId())
       .then((response) => {
           assert.equal(response.status, 200);
           const invalidOrderId = "invalidOrderId";
 
           chai.request(url)
               .get(`/orders/${invalidOrderId}`)
-              .set("Authorization", "Bearer " + token)
+              .set("Authorization", "Bearer " + token.tokenId())
               .then((response) => {
                   assert.equal(response.status, 404)
                   assert.equal(response.body.error, `No order with id ${invalidOrderId}.`);
