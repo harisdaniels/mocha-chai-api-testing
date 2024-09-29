@@ -1,0 +1,38 @@
+name: Run API Automation
+#on: [push, pull_request]
+on:
+  workflow_dispatch:
+    inputs:
+      platform:
+        description: 'Select where to run'
+        required: true
+        default: 'github'
+        type: choice
+        options:
+          - github
+      artifacts:
+        description: 'Artifact reporting'
+        required: false
+        type: boolean
+
+jobs:
+  setup-build-test:
+    runs-on: ubuntu-latest
+    steps:
+        - name: Checkout
+          uses: actions/checkout@v4
+        - name: Setup Node JS
+          uses: actions/setup-node@v4
+          with:
+            node-version: 18
+        - name: Install Dependencies
+          run:  npm install
+        - name: Run Web Automation
+          run: npm run test
+          continue-on-error: false
+        - name: Generate Report
+          if: ${{ failure() || success() }}
+          uses: actions/upload-artifact@v4
+          with:
+            name: reports
+            path: ./mochawesome-report
