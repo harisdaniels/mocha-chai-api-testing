@@ -119,10 +119,7 @@ describe("As a customer, I want to make an order", () => {
 ```
 
 ## Run Test
-You can run your test by simply type `npm run test` command in your terminal, then press ENTER on your keyboard. And, the API Testing will run
-![image](https://drive.google.com/uc?export=view&id=1AvWtgQn9JbGL1ycUF9q-TTp4duiijLm6)
-The result will be like this.
-
+You can run your test by simply type `npm run test` command in your terminal, then press ENTER on your keyboard. And, the API Testing will run.
 
 ## Test Report by Mochawesome
 After run the test, you can also see the result of the test by copying the html file and paste it to search bar of your browser
