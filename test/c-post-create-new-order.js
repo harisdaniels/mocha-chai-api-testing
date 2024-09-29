@@ -10,8 +10,7 @@ dotenv.config();
 chai.use(chaiHttp);
 
 const url = process.env.URL;
-// const token = process.env.ACCESS_TOKEN;
-let accessToken; 
+
 describe("As a customer, I want to make an order", () => {
     
   it("It should SUCCESS to MAKE an ORDER", (done) => {

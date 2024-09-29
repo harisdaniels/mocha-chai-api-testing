@@ -9,7 +9,7 @@ dotenv.config();
 chai.use(chaiHttp);
 
 const url = process.env.URL;
-// const token = process.env.ACCESS_TOKEN;
+
 describe("As a customer, I want to delete my Order", () => {   
 
   it("It should SUCCESS to delete one of the customers by Order ID", (done) => {
