@@ -53,7 +53,7 @@ Before start development and running the test you need to install packages that 
 - and type `npm install` in your terminal and press ENTER on your keyboard
 - wait, and done
 
-### Generating Access Token from Postman (API Authentication)
+### [OPTIONAL] Generating Access Token from Postman (API Authentication)
 To submit or view an `/orders`, you need to register your API client.
 
 The request body needs to be in JSON format and include the following properties:
@@ -74,21 +74,7 @@ Example :
 - Select **Body** tab and Click **raw**
 - Put `{ "clientName": "test", "clientEmail": "testemail200@example.com" }` as **JSON** format
 - Click SEND
-- And Postman will generate access token for you
-
-![image](https://drive.google.com/uc?export=view&id=1gkLGXdgc6WzQKpSqb_HzTE9RhUooJQZw)
-> *NOTE: You CANNOT use the JSON Example above. Because it is already registered. You should use another one.
-
-- Then, copy the **value** of `"accessToken"` from response body on Postman `{ "accessToken": "copyAccessTokenFromResponseBodyInYourPostman1234567890"}`.
-- Open your project with Code Editor
-- Open `.env` file
-- And store it in `.env` variable as shown down below. 
-> I stored the `accessToken` in variable named `ACCESS_TOKEN`. You can store in a variable whatever you want
-
-![Screenshot_1](https://user-images.githubusercontent.com/74105380/126869264-8ca1d043-29da-4006-9325-5b888123d157.jpg)
-
-- So, you can use the access token by typing `process.env.ACCESS_TOKEN`
-
+- And Postman will generate access token for you`
 
 
 ## Test Structure
@@ -101,41 +87,41 @@ const chaiHttp = require('chai-http');
 const dotenv = require('dotenv');
 
 const assert = chai.assert;
+const data = require("../base-helper/data/data.js");
+const token = require("./a-get-main-page.js");
 
 dotenv.config();
 chai.use(chaiHttp);
 
+const url = process.env.URL;
+
 describe("As a customer, I want to make an order", () => {
-    const url = process.env.URL;
-    const token = process.env.ACCESS_TOKEN; 
-    it("It should SUCCESS to MAKE an ORDER", (done) => {
-        chai
-            .request(url)
-            .post('/orders')           
-            .set("Authorization", "Bearer " + token)
-            .send({
-                "bookId": 1,
-                "customerName": "John"
-            })
-            .then((response) => {
-                assert.equal(response.status, 201);
-                assert.equal(response.body.created, true);
-                chai.expect(response.body).to.have.property("orderId");
-                done();
-            })
-            .catch((error) => {
-                done(error);
-            });    
-    });
+    
+  it("It should SUCCESS to MAKE an ORDER", (done) => {
+    chai
+      .request(url)
+      .post('/orders')           
+      .set("Authorization", "Bearer " + token.tokenId())
+      .send(data.CREATE_ORDER_DATA_VALID)
+      .then((response) => {
+          assert.equal(response.status, 201);
+          assert.equal(response.body.created, true);
+          chai.expect(response.body).to.have.property("orderId");
+
+          done();
+      })
+      .catch((error) => {
+          done(error);
+      });    
+  });
+    
 });
 ```
 
 ## Run Test
-
 You can run your test by simply type `npm run test` command in your terminal, then press ENTER on your keyboard. And, the API Testing will run
 ![image](https://drive.google.com/uc?export=view&id=1AvWtgQn9JbGL1ycUF9q-TTp4duiijLm6)
 The result will be like this.
-
 
 
 ## Test Report by Mochawesome
@@ -146,6 +132,12 @@ After run the test, you can also see the result of the test by copying the html 
 ### Test Report Sample
 ![Screenshot_5](https://user-images.githubusercontent.com/74105380/126753428-ebe4b120-c669-48af-822a-154c77fc229b.jpg)
 The result will be like this.
+
+## Run Test through Github Actions
+- Go to `Actions` tab on the top of Github page
+- Choose `Run API Automation` workflow
+- Click `Run Workflow` dropdown on the right side of the page
+- Click `Run Workflow` button
 
 
 # All is Done!
