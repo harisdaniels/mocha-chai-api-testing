@@ -53,7 +53,7 @@ Before start development and running the test you need to install packages that 
 - and type `npm install` in your terminal and press ENTER on your keyboard
 - wait, and done
 
-### [OPTIONAL] Generating Access Token from Postman (API Authentication)
+### Generating Access Token from Postman (API Authentication)
 To submit or view an `/orders`, you need to register your API client.
 
 The request body needs to be in JSON format and include the following properties:
