@@ -10,7 +10,7 @@ dotenv.config();
 chai.use(chaiHttp);
 
 const url = process.env.URL;
-// const token = process.env.ACCESS_TOKEN;
+
 describe("As a customer, I want to UPDATE my Order", () => {
 
   it("It should SUCCESS to change the name of the Customer", (done) => {

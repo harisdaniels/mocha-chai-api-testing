@@ -9,7 +9,7 @@ dotenv.config();
 chai.use(chaiHttp);
 
 const url = process.env.URL;
-// const token = process.env.ACCESS_TOKEN;
+
 describe("As a customer, I want to see ALL kind of Orders", () => {  
 
   it("It should give ERROR message, because there is NO token", (done) => {
